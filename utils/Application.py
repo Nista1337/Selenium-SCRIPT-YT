@@ -11,7 +11,7 @@ import json
 
 
 class Application:
-    def __init__(self, request) -> None:
+    def __init__(self, request: str) -> None:
 
         self.__url__ = "https://www.youtube.com/results?search_query=" # ссылка для ввода запроса
         self.request = request.replace(" ", "+") # меняем пробелы на + для запроса
@@ -33,22 +33,22 @@ class Application:
             Running the program
         """
         print('[!] Открываю youtube.com')
-        self.__open_url() # Открывает ссылку с запросом
+        self.open_url() # Открывает ссылку с запросом
         time.sleep(1) # Спим 1 секунду
         
         print('[!] Начинаю подгрузку куков')
-        self.__load_cookie() # Подгружаем куки
+        self.load_cookie() # Подгружаем куки
         time.sleep(5) # Спим 5 секунд
         
         print('[!] Проверяю авторизацию')
-        status = self.__check_auth() # Проверяем авторицию | Возращает bool
+        status = self.check_auth() # Проверяем авторицию | Возращает bool
         if not status:
             print('[-] Ваши куки невалидные')
             return
         print('[+] Авторизация прошла')
 
         print('[!] Собираю видео со страницы...')
-        videos = self.__parse_videos() # Парсим видео | Возврощает list
+        videos = self.parse_videos() # Парсим видео | Возврощает list
 
 
         if not videos:
@@ -66,7 +66,7 @@ class Application:
         time.sleep(5) # Спим 5 секунд
         
         print('[!] Лайкаю видео')
-        status_like = self.__set_like() # Ставим лайк | True - лайк поставлен | False - лайка нет
+        status_like = self.set_like() # Ставим лайк | True - лайк поставлен | False - лайка нет
         if status_like: # Проверяем status лайка
             print('[+] Лайк отправлен')
         else:
@@ -74,26 +74,26 @@ class Application:
         time.sleep(1) # Спим 1 секунду
         
         print('[!] Пытаюсь подписаться...')
-        status_sub = self.__subscribe() # Подписываемся | True - подписан | False - подписки нет
+        status_sub = self.subscribe() # Подписываемся | True - подписан | False - подписки нет
         if status_sub:
             print('[+] Оформил подписку')
         else:
             print('[-] Не смог подписаться')
 
-        input()
 
+        time.sleep(5)
         
 
 
 
-    def __load_cookie(self) -> None: # Загрузка куков
+    def load_cookie(self) -> None: # Загрузка куков
         """
             Cookie loading
         """
         with open('cookie.txt', "r", encoding="utf8") as f: # Открываем файл для чтения с кодировкой utf8
             try:
                 lines = json.loads(f.read()) # Читаем файл + декодирования строки, содержащей данные в формате JSON
-            except:
+            except json.JSONDecodeError:
                 print('[-] Неверный формат куков')
                 raise
         
@@ -104,7 +104,7 @@ class Application:
 
         self.browser.refresh() # Обновляем страничку
 
-    def __check_auth(self) -> bool: # Проверка авторизации | Возврощает bool
+    def check_auth(self) -> bool: # Проверка авторизации | Возврощает bool
         """
             Authorization check
 
@@ -115,7 +115,7 @@ class Application:
             return False
         return True
 
-    def __set_like(self) -> bool: # Ставим лайк | Возврощает bool
+    def set_like(self) -> bool: # Ставим лайк | Возврощает bool
         """
             As function that puts like function that puts likes
 
@@ -128,7 +128,7 @@ class Application:
         status_like = self.browser.find_element(By.XPATH, "//button[@class='yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading yt-spec-button-shape-next--segmented-start ']").get_attribute('aria-pressed')
         return status_like == 'true'
     
-    def __subscribe(self) -> bool: # Подписка | Возрощает bool
+    def subscribe(self) -> bool: # Подписка | Возрощает bool
         """
             Function for subscribing to the channel
 
@@ -145,14 +145,14 @@ class Application:
 
         
 
-    def __open_url(self) -> None: # Функция открытия ссылки (запроса)
+    def open_url(self) -> None: # Функция открытия ссылки (запроса)
         """
             Opening a link with request
         """
         self.browser.get(self.__url__+self.request) # гетаем ссылка_ютуба+наш_запрос
 
     
-    def __parse_videos(self) -> list: # Парсинг видео | List
+    def parse_videos(self) -> list: # Парсинг видео | List
         # Ищет тег <ytd-video-renderer>
         """
             Video parser YT

@@ -27,4 +27,5 @@ python app.py
 
 1. Вставляем в cookie.txt куки формата JSON
 2. Вводим любой желаемый запрос
-3. Ожидаем результат
+3. Ожидаем результат"# Selenium-SCRIPT-YT" 
+"# Selenium-SCRIPT-YT" 
