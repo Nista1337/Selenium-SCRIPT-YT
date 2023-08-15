@@ -1,4 +1,4 @@
-﻿from selenium import webdriver
+from selenium import webdriver
 import selenium
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common import desired_capabilities
@@ -63,7 +63,7 @@ class Application:
             video = videos[5] # Берем 5 индекс (6 видео)
         
         video.click() # Нажимаем на видео
-        time.sleep(5) # Спим 5 секунд
+        time.sleep(10) # Спим 10 секунд
         
         print('[!] Лайкаю видео')
         status_like = self.set_like() # Ставим лайк | True - лайк поставлен | False - лайка нет
@@ -149,7 +149,8 @@ class Application:
         """
             Opening a link with request
         """
-        self.browser.get(self.__url__+self.request) # гетаем ссылка_ютуба+наш_запрос
+
+        self.browser.get(self.__url__+self.request+'&sp=EgIQAQ') # гетаем ссылка_ютуба+наш_запрос+filter
 
     
     def parse_videos(self) -> list: # Парсинг видео | List
